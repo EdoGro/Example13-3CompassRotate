@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Example 13-2</title>
+<title>Example 13-3</title>
 <meta http-equiv="Content-type"
 content="text/html; charset=utf-8">
 <meta name="viewport" id="viewport"
@@ -23,10 +23,9 @@ false);
 hi = document.getElementById('headingInfo');
 }
 function onDeviceReady() {
-//Set up the watch
-//Read the compass 4 times a second
-var watchOptions = { frequency: 250 };
-watchID = navigator.compass.watchHeading(
+//Set up the watch to fire whenever the compass moves 5 degrees
+var watchOptions = { filter : 5 };
+watchID = navigator.compass.watchHeadingFilter(
 onHeadingSuccess, onHeadingError, watchOptions);
 }
 function onHeadingSuccess(heading) {
@@ -36,12 +35,11 @@ $("#compass").rotate(-hv);
 }
 function onHeadingError(compassError) {
 //Remove the watch since we're having a problem
-navigator.compass.clearWatch(watchID);
+navigator.compass.clearWatchFilter(watchID);
 //clear the Heading value from the page
 hi.innerHTML = "";
 //Then tell the user what happened.
-if (compassError.code ==
-CompassError.COMPASS_NOT_SUPPORTED) {
+if(compassError.code == CompassError.COMPASS_NOT_SUPPORTED) {
 alert("Compass not supported.");
 } else if (compassError.code ==
 CompassError.COMPASS_INTERNAL_ERR) {
@@ -53,7 +51,7 @@ alert("Unknown heading error!");
 </script>
 </head>
 <body onload="onBodyLoad()">
-<h1>Example 13-2</h1>
+<h1>Example 13-3</h1>
 <img src="compass.png" id="compass" align="middle" /><br />
 <p id="headingInfo"></p>
 </body>
